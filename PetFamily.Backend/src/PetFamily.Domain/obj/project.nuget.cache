@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "NFQsl9/E8gw=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\SBEUwU\\Desktop\\PetFamily\\PetFamily.Backend\\src\\PetFamily.Domain\\PetFamily.Domain.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\SBEUwU\\.nuget\\packages\\csharpfunctionalextensions\\3.6.0\\csharpfunctionalextensions.3.6.0.nupkg.sha512"
+  ],
+  "logs": []
+}
