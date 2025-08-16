@@ -6,7 +6,7 @@ public class Species : PetFamily.Domain.Shared.Entity<SpeciesId>
 {
     private readonly List<Breed> _breeds = [];
     
-    private Species(SpeciesId speciesId) : base(speciesId)
+    private Species(SpeciesId id) : base(id)
     {
         // EF Core
     }

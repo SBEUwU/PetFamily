@@ -4,7 +4,7 @@ namespace PetFamily.Domain.Species;
 
 public class Breed : PetFamily.Domain.Shared.Entity<BreedId>
 {
-    private Breed(BreedId breedId) : base(breedId)
+    private Breed(BreedId id) : base(id)
     {
         // EF Core
     }

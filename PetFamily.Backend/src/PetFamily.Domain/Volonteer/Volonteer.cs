@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Volonteer;
 
@@ -7,7 +8,7 @@ public class Volonteer : Shared.Entity<VolonteerId>
     private readonly List<SocialMedia> _socialMedias = [];
     private readonly List<Pet.Pet> _pets = [];
     
-    private Volonteer(VolonteerId volonteerId) : base(volonteerId)
+    private Volonteer(VolonteerId id) : base(id)
     {
         // EF Core
     }
@@ -30,23 +31,28 @@ public class Volonteer : Shared.Entity<VolonteerId>
     
     public int YearsExperience { get; private set; } = default!;
     
-    public int AdoptedPetCount => Pets.Count(p => p.Status == "Adopted");
+    public int AdoptedPetCount => Pets.Count(p => p.Status.Value == "Adopted");
     
-    public int AvailablePetCount => Pets.Count(p => p.Status == "Available");
+    public int AvailablePetCount => Pets.Count(p => p.Status.Value == "Available");
     
-    public int RecoveringPetCount => Pets.Count(p => p.Status == "Recovering");
+    public int RecoveringPetCount => Pets.Count(p => p.Status.Value == "Recovering");
     
     public string PhoneNumber { get; private set; } = default!;
-
-    public IReadOnlyList<SocialMedia> SocialMedias => _socialMedias;
     
     public VolonteerHelpDetail VolonteerHelpDetail { get; private set; } = default!;
 
     public IReadOnlyList<Pet.Pet> Pets => _pets;
     
+    public VolonteerDetails Details { get; private set; } = default!;
+    
     public void AddSocialMedia(SocialMedia socialMedia)
     {
-        _socialMedias.Add(socialMedia);
+        Details.SocialMedias.Add(socialMedia);
+    }
+    
+    public void AddPet(Pet.Pet pet)
+    {
+        _pets.Add(pet);
     }
     
     public static Result<Volonteer> Create(VolonteerId volonteerId, string fullName, string email, string description, int yearsExperience, string phoneNumber, VolonteerHelpDetail volonteerHelpDetail)
@@ -57,7 +63,7 @@ public class Volonteer : Shared.Entity<VolonteerId>
             return Result.Failure<Volonteer>("Email cannot be empty");
         if (string.IsNullOrWhiteSpace(description))
             return Result.Failure<Volonteer>("Description cannot be empty");
-        if (yearsExperience >= 0)
+        if (yearsExperience < 0)
             return Result.Failure<Volonteer>("YearsExperience cannot be lower than 0");
         if (string.IsNullOrWhiteSpace(phoneNumber))
             return Result.Failure<Volonteer>("Phone number cannot be empty");
