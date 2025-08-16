@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Pet;
 
@@ -68,28 +69,28 @@ public class Pet : Shared.Entity<PetId>
         Details.Photos.Add(photo);
     }
     
-    public static Result<Pet> Create(PetId petId, string name, SpeciesBreedIds speciesBreedIds, string description,
+    public static Result<Pet, Error> Create(PetId petId, string name, SpeciesBreedIds speciesBreedIds, string description,
         string color, string healthInfo, Address address, float weight, float height, string phoneNumber, bool castrate,
         DateTime birthDate, bool vaccination, Status status, PetHelpDetail petHelpDetail, DateTime createDate)
     {
         if (string.IsNullOrWhiteSpace(name))
-            return Result.Failure<Pet>("Name cannot be empty");
+            return Errors.General.ValueIsInvalid("name");
         if (string.IsNullOrWhiteSpace(description))
-            return Result.Failure<Pet>("Description cannot be empty");
+            return Errors.General.ValueIsInvalid("description");
         if (string.IsNullOrWhiteSpace(color))
-            return Result.Failure<Pet>("Color cannot be empty");
+            return Errors.General.ValueIsInvalid("color");
         if (string.IsNullOrWhiteSpace(healthInfo))
-            return Result.Failure<Pet>("HealthInfo cannot be empty");
+            return Errors.General.ValueIsInvalid("health info");
         if (weight < 0)
-            return Result.Failure<Pet>("Weight cannot be 0 or lower");
+            return Errors.General.ValueIsInvalid("weight");
         if (height < 0)
-            return Result.Failure<Pet>("Height cannot be 0 or lower");
+            return Errors.General.ValueIsInvalid("height");
         if (string.IsNullOrWhiteSpace(phoneNumber))
-            return Result.Failure<Pet>("Phone number cannot be empty");
+            return Errors.General.ValueIsInvalid("phoneNumber");
         
         var pet = new Pet(petId, name, speciesBreedIds, description, color, healthInfo,
             address, weight, height, phoneNumber, castrate, birthDate, vaccination, status, petHelpDetail, createDate);
         
-        return Result.Success(pet);
+        return pet;
     }
 }

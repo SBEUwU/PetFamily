@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Pet;
 
@@ -11,13 +12,13 @@ public record Photo
     
     public string PathToPhoto { get; }
     
-    public static Result<Photo> Create(string pathToPhoto)
+    public static Result<Photo, Error> Create(string pathToPhoto)
     {
         if (string.IsNullOrWhiteSpace(pathToPhoto))
-            return Result.Failure<Photo>("Path to photo cannot be empty");
+            return Errors.General.ValueIsInvalid("path to photo");
 
         var photo = new Photo(pathToPhoto);
         
-        return Result.Success(photo);
+        return photo;
     }
 }

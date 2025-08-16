@@ -55,21 +55,21 @@ public class Volonteer : Shared.Entity<VolonteerId>
         _pets.Add(pet);
     }
     
-    public static Result<Volonteer> Create(VolonteerId volonteerId, string fullName, string email, string description, int yearsExperience, string phoneNumber, VolonteerHelpDetail volonteerHelpDetail)
+    public static Result<Volonteer, Error> Create(VolonteerId volonteerId, string fullName, string email, string description, int yearsExperience, string phoneNumber, VolonteerHelpDetail volonteerHelpDetail)
     {
         if (string.IsNullOrWhiteSpace(fullName))
-            return Result.Failure<Volonteer>("Full name cannot be empty");
-        if (string.IsNullOrWhiteSpace(email))
-            return Result.Failure<Volonteer>("Email cannot be empty");
+            return Errors.General.ValueIsInvalid("full name");
+        if (string.IsNullOrWhiteSpace(email)) 
+            return Errors.General.ValueIsInvalid("email");
         if (string.IsNullOrWhiteSpace(description))
-            return Result.Failure<Volonteer>("Description cannot be empty");
+            return Errors.General.ValueIsInvalid("description");
         if (yearsExperience < 0)
-            return Result.Failure<Volonteer>("YearsExperience cannot be lower than 0");
+            return Errors.General.ValueIsInvalid("years experience");
         if (string.IsNullOrWhiteSpace(phoneNumber))
-            return Result.Failure<Volonteer>("Phone number cannot be empty");
+            return Errors.General.ValueIsInvalid("phone number");
         
         var volonteer = new Volonteer(volonteerId, fullName, email, description, yearsExperience, phoneNumber, volonteerHelpDetail);
         
-        return Result.Success(volonteer);
+        return volonteer;
     }
 }

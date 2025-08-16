@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 
 namespace PetFamily.Domain.Pet;
 
@@ -11,13 +12,20 @@ public record Status
     
     public string Value { get; }
 
-    public static Result<Status> Create(string value)
+    public static Result<Status, Error> Create(string value)
     {
-        if (value != "Adopted" && value != "Available" && value != "Recovering")
-            return Result.Failure<Status>("Status cannot be another than Adopted, Available, Recovering");
+        if (value != nameof(StatusValues.Adopted) && value != nameof(StatusValues.Available) && value != nameof(StatusValues.Recovering))
+            return Errors.General.ValueIsInvalid("status");
         
         var status = new Status(value);
 
         return status;
     }
+}
+
+public enum StatusValues
+{
+    Adopted,
+    Available,
+    Recovering
 }

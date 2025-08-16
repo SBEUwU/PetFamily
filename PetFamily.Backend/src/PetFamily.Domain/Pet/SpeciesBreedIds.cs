@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.Species;
 
 namespace PetFamily.Domain.Pet;
@@ -15,13 +16,13 @@ public record SpeciesBreedIds
     public SpeciesId SpeciesId { get; }
     public BreedId BreedId { get; } 
     
-    public static Result<SpeciesBreedIds> Create(SpeciesId speciesId, BreedId breedId)
+    public static Result<SpeciesBreedIds, Error> Create(SpeciesId speciesId, BreedId breedId)
     {
         if (speciesId == null)
-            return Result.Failure<SpeciesBreedIds>("SpeciesId cannot be null");
+            return Errors.General.ValueIsInvalid("species id");
         if (breedId == null)
-            return Result.Failure<SpeciesBreedIds>("BreedId cannot be null");
+            return Errors.General.ValueIsInvalid("breed id");
 
-        return Result.Success(new SpeciesBreedIds(speciesId, breedId));
+        return new SpeciesBreedIds(speciesId, breedId);
     }
 }
